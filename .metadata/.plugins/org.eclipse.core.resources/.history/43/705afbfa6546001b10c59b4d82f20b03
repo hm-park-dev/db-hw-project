@@ -1,0 +1,20 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Search Result</title>
+</head>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	String tableName = request.getParameter("search");
+	String search = request.getParameter("searchValue");
+%>
+<body>
+</body>
+</html>

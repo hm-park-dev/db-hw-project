@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Search Result</title>
+</head>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	String tableName = request.getParameter("search");
+	String attribute = request.getParameter("selectAttr");
+	String search = request.getParameter("searchValue");
+	
+	// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+	Statement stmt = conn.createStatement();
+	
+	if (tableName.equals("Customer")) {
+		String sql = "select * from customer where ?="+search+"";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+	}
+	else if (tableName.equals("Transaction")) {
+		
+	}
+	else if (tableName.equals("Product")) {
+		
+	}
+%>
+<body>
+</body>
+</html>

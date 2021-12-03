@@ -1,0 +1,12 @@
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import  %>
+<%
+	// "jdbc:mysql://ENDPOINT"
+	String DB_URL = "jdbc:mysql://database-1.cdg5rjlrvadw.us-east-2.rds.amazonaws.com/";
+	String DB_USER = "admin";
+	String DB_PASSWORD = "adkhrtuy";
+	
+	Connection con = null;
+	PreparedStatement pstmt = null;
+
+%>

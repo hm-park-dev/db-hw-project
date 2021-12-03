@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Special Search Result</title>
+</head>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	String searchDate = request.getParameter("transactionDate");
+	
+	ResultSet rs = null;
+	PreparedStatement pstmt = null;	
+	
+	// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+	Statement stmt = conn.createStatement();
+	
+	String sql = "SELECT product.name, product.productID, SUM(transaction.price)
+			FROM product, transaction
+			WHERE transaction.date < '2012-12-12' AND product.productID = transaction.productID
+			GROUP BY transaction.productID
+			HAVING SUM(transaction.price) >= ALL (
+				SELECT SUM(transaction.price)
+				FROM transaction
+				WHERE transaction.date < '2012-12-12'
+				GROUP BY transaction.productID);";
+	pstmt = conn.prepareStatement(sql);
+%>
+<body>
+
+</body>
+</html>

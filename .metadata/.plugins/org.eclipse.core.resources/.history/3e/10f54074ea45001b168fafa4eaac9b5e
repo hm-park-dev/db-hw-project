@@ -1,0 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Transaction Input</title>
+</head>
+<body>
+	<form name="transactionInsertForm" id="transactionInsertForm" action="transactionInsert.jsp">
+		<br>
+		거래 번호
+		<br>
+		<input type="text" name="transactionNumber1" id="transactionNumber1" size="6" maxlength="6">
+		<input type="text" name="transactionNumber2" id="transactionNumber2" size="4" maxlength="4">
+		<br>
+		상품 ID
+		<br>
+		<input type="text" name="productID" id="productID" size="8" maxlength="8">
+		<br>
+		가격
+		<br>
+		$
+		<input type="text" name="transactionNumber1" id="transactionNumber1" size="4" maxlength="4">
+		.
+		<input type="text" name="transactionNumber2" id="transactionNumber2" size="2" maxlength="2">
+		<br>
+		날짜
+		<br>
+		<input type="date" name="transactionDate" id="transactionDate">
+		<br>
+		고객 이름
+		<br>
+		<input type="text" name="customerName" id="customerName" maxlength="30">
+		<br>
+	</form>
+	<input type="button" value="입력" id="transactionInput" OnClick="javascript:Insert();">
+</body>
+</html>

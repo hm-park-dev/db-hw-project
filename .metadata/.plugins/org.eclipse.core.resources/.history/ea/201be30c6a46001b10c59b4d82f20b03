@@ -1,0 +1,115 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Search Result</title>
+</head>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	String tableName = request.getParameter("search");
+	String attribute = request.getParameter("selectAttr");
+	String searchValue = request.getParameter("searchValue");
+	ResultSet rs = null;
+	PreparedStatement pstmt = null;
+	
+	// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+	Statement stmt = conn.createStatement();
+	
+	if (tableName.equals("Customer")) {
+		String sql = "select * from customer where "+ attribute + "='"+searchValue+"'";
+		pstmt = conn.prepareStatement(sql);
+		
+		try{
+			out.println(pstmt);
+			rs = pstmt.executeQuery();
+			
+			
+			if (!rs.next()) {
+				out.println("해당하는 고객 정보가 없습니다.");
+				return ;
+			} else {
+				rs = pstmt.executeQuery();
+			}
+			
+			
+			out.println("<br> name		phone		address		gender");
+			while(rs.next()) {
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				String address = rs.getString("address");
+				String gender = rs.getString("gender");
+				
+				out.println("<br>" + name + " " + phone + " " + address + " " + gender);
+			}
+			
+		}catch(SQLException e){
+		    out.println(e.toString());
+		}
+	}
+	else if (tableName.equals("Transaction")) {
+		String sql = "select * from customer where "+ attribute + "='"+searchValue+"'";
+		pstmt = conn.prepareStatement(sql);
+		
+		try{
+			rs = pstmt.executeQuery();
+			
+			if (!rs.next()) {
+				out.println("해당하는 고객 정보가 없습니다.");
+				return ;
+			} else {
+				rs = pstmt.executeQuery();
+			}
+			
+			out.println("<br> transactionNumber		productID		price		date		customerName");
+			while(rs.next()) {
+				String transactionNumber = rs.getString("transactionNumber");
+				String productID = rs.getString("productID");
+				String price = rs.getString("price");
+				String date = rs.getString("date");
+				String customerName = rs.getString("customerName");
+				
+				out.println("<br>" + transactionNumber + " " + productID + " " + price + " " + 
+						date + " " + customerName);
+			}
+			
+		}catch(SQLException e){
+		    out.println(e.toString());
+		}
+	}
+	else if (tableName.equals("Product")) {
+		String sql = "select * from customer where "+ attribute + "='"+searchValue+"'";
+		pstmt = conn.prepareStatement(sql);
+		
+		try{
+			rs = pstmt.executeQuery();
+			
+			if (!rs.next()) {
+				out.println("해당하는 고객 정보가 없습니다.");
+				return ;
+			} else {
+				rs = pstmt.executeQuery();
+			}
+			
+			out.println("<br> name		productID		supplierName");
+			while(rs.next()) {
+				String name = rs.getString("name");
+				String productID = rs.getString("productID");
+				String supplierName = rs.getString("supplierName");
+				
+				out.println("<br>" + name + " " + productID + " " + supplierName);
+			}
+			
+		}catch(SQLException e){
+		    out.println(e.toString());
+		}
+	}
+%>
+<body>
+</body>
+</html>

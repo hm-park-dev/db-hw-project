@@ -1,0 +1,167 @@
+<%@page import="java.io.File"%>
+<%@page import="java.nio.file.Files" %>
+<%@page import="java.io.BufferedReader" %>
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+<%@ page import="java.util.*"%>
+<%@ page import="java.io.*"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>CSV Upload</title>
+</head>
+<body>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	String uploadPath = request.getRealPath("uploadFile");
+	String fileName = "";
+	String orgfileName = "";
+	String filePath = "";
+	String line = "";
+	String a = "";
+	
+	int successNum = 0;
+	int failedNum = 0;
+	
+	ArrayList<String[]> arrList = new ArrayList<String[]>();
+	FileReader fr = null;
+	BufferedReader br = null;
+	
+	try{
+		MultipartRequest multi = new MultipartRequest(
+								request, uploadPath, 10*1024, "utf-8", 
+								new DefaultFileRenamePolicy());
+		fileName = multi.getFilesystemName("fileName");
+		orgfileName = multi.getOriginalFileName("fileName");
+		
+		filePath = uploadPath + "\\" + fileName;
+		File csv = new File(filePath);
+		br = new BufferedReader(new FileReader(csv));
+		
+		
+		while ((line = br.readLine()) != null) { 
+			// -1 옵션은 마지막 "," 이후 빈 공백도 읽기 위한 옵션 
+			String[] token = line.split(", ", -1); 
+			
+			if (token[0].equals("C")) {	
+				String customerName = token[1];
+				String customerPhone = token[2];
+				String customerAddress = token[3];
+				String customerGender = token[4];
+				
+				// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+				Statement stmt = conn.createStatement();
+				
+				String sql = "INSERT INTO mydb.customer VALUES(?,?,?,?)";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				
+				try{
+					pstmt.setString(1, customerName);
+					pstmt.setString(2, customerPhone);
+					pstmt.setString(3, customerAddress);
+					pstmt.setString(4, customerGender);
+					
+					pstmt.execute();
+					pstmt.close();
+					successNum++;
+				}catch(SQLException e){
+				       out.println(e.toString());
+				}
+			}
+			else if (token[0].equals("T")) {
+				String transactionNumber = token[1];
+				String productID = token[2];
+				
+				String _price = token[3];
+				String price = _price.substring(_price.indexOf("$")+1);
+				
+				String dateString = token[4];
+				String[] splitDate = dateString.split("/");
+				String day = splitDate[0];
+				if (day.length() == 1) {
+					day = "0" + day;
+				}
+				String month = splitDate[1];
+				if (month.length() == 1) {
+					month = "0" + month;
+				}
+				String year = splitDate[2];
+				String transactionDate = year + "-" + month + "-" + day;
+				
+				String customerName = token[5];
+				
+				
+				// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+				Statement stmt = conn.createStatement();
+				
+				String sql = "INSERT INTO mydb.transaction VALUES(?,?,?,?,?)";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				
+				try{
+					pstmt.setString(1, transactionNumber);
+					pstmt.setString(2, productID);
+					pstmt.setString(3, price);
+					pstmt.setString(4, transactionDate);
+					pstmt.setString(5, customerName);
+					
+					pstmt.execute();
+					pstmt.close();
+					successNum++;
+				}catch(SQLException e){
+				       out.println(e.toString());
+				}
+				
+			}
+			else if (token[0].equals("P")) {
+				String productName = token[1];
+				String productID = token[2];
+				String supplierName = token[3];
+				
+				// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+				Statement stmt = conn.createStatement();
+				
+				String sql = "INSERT INTO mydb.product VALUES(?,?,?)";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				
+				try{
+					pstmt.setString(1, productName);
+					pstmt.setString(2, productID);
+					pstmt.setString(3, supplierName);
+					
+					pstmt.execute();
+					pstmt.close();
+					successNum++;
+				}catch(SQLException e){
+				       out.println(e.toString());
+				}
+			}
+			else {
+				failedNum++;
+			}
+		} 
+		
+		br.close();
+		
+		if(csv.exists()) 
+			csv.delete(); 
+
+	} catch (Exception e) {
+		e.getStackTrace();
+	}
+	
+	out.println("<script>alert(" + successNum + "'개의 입력을 성공하고, '" + failedNum + "'개의 입력을 실패했습니다.');</script>");
+%>
+<script>
+	window.location.href="Main.jsp"
+</script>
+</body>
+</html>

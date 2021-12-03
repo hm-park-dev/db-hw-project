@@ -1,0 +1,42 @@
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%
+	// 미리 작성된 DBConn 클래스 사용
+	// 1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+	out.println("db 연결 정보: " + conn);
+	
+	// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+	Statement stmt = conn.createStatement();
+	
+	String sql = "SELECT * FROM customer";
+	stmt.executeQuery(sql);
+	
+	// 3. select 쿼리 결과 저장한 메모리 영역을 참조할 객체
+	ResultSet rs = null;
+	
+	// 4. sql 쿼리 실행
+	rs = stmt.executeQuery(sql);
+	
+	// 5. rs 참조를 이용한 데이터 가져오기
+	// rs.next(); // 검색 결과  데이터 접근을 위한 rs 시작
+	while(rs.next()) {
+		out.print("<br>");
+		out.print(rs.getString("name")+ "<br>");
+		out.print(rs.getString("phone")+ "<br>");
+		out.print(rs.getString("address")+ "<br>");
+		out.print(rs.getString("gender")+ "<br>");
+	}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>

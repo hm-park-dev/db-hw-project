@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Customer Insert Test</title>
+</head>
+<body>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	String customerName = request.getParameter("customerName");
+	String customerPhone1 = request.getParameter("customerPhone1");
+	String customerPhone2 = request.getParameter("customerPhone2");
+	String customerPhone3 = request.getParameter("customerPhone3");
+	String customerAddress = request.getParameter("customerAddress");
+	String customerGender = request.getParameter("customerGender");
+	
+	// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+	Statement stmt = conn.createStatement();
+	
+	String sql = "SELECT * FROM customer";
+	stmt.executeQuery(sql);
+
+	// 3. select 쿼리 결과 저장한 메모리 영역을 참조할 객체
+	ResultSet rs = null;
+	   
+	// 4. sql 쿼리 실행
+	rs = stmt.executeQuery(sql);
+
+%>
+</body>
+</html>

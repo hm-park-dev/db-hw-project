@@ -1,0 +1,48 @@
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	
+</script>
+</head>
+<body>
+	<form name="customerInsert" action="customerInput.jsp">
+		<input type="submit" value="고객 입력">
+	</form>
+	<form name="transactionInsert" action="transactionInput.jsp">
+		<input type="submit" value="거래 입력">
+	</form>
+	<form name="productInsert" action="productInput.jsp">
+		<input type="submit" value="상품 입력">
+	</form>
+	<form name="uploadForm" action="csvUpload.jsp" method="post" enctype="Multipart/form-data">
+		<p>csv 파일 업로드</p>
+		<input type="file" name="fileName">
+		<input type="submit" value="업로드">
+	</form>
+	<form name="searchForm">
+		<p>KEY 값을 통해 검색을 진행합니다.</p>
+		<p>=== 각 Key 값 ===</p>
+		<p>고객:	이름</p>
+		<p>거래: 거래 번호</p>
+		<p>상품: 상품 ID</p>
+		<select name="search">
+			<option value="none">=== 선택 ===</option>
+			<option value="customerSearch">고객</option>
+			<option value="transactionSearch">거래</option>
+			<option value="productSearch">상품</option>
+		</select>
+		<input type="text" name="searchValue" id="searchValue">
+		<br>
+		<input type="submit" value="검색">
+	</form>
+	
+</body>
+</html>

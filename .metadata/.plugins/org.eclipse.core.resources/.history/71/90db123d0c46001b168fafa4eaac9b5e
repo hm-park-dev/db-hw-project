@@ -1,0 +1,34 @@
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	
+</script>
+</head>
+<body>
+	<form name="customerInsert" action="customerInput.jsp">
+		<input type="submit" value="고객 입력">
+	</form>
+	<form name="transactionInsert" action="transactionInput.jsp">
+		<input type="submit" value="거래 입력">
+	</form>
+	<form name="productInsert" action="productInput.jsp">
+		<input type="submit" value="상품 입력">
+	</form>
+	<form name="uploadForm" action="csvUpload.jsp" method="post" enctype="Multipart/form-data">
+		<p>csv 파일 업로드</p>
+		<input type="file" name="fileName">
+		<input type="submit" value="업로드">
+		<!--  
+		<input type="button" name="upload" value="업로드" onClick="javascript:csvUpload()">
+		-->
+	</form>
+</body>
+</html>

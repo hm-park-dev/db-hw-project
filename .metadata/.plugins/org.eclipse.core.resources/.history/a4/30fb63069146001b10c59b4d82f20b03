@@ -1,0 +1,76 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Special Search2 Result</title>
+</head>
+<%
+	//1. Connection
+	Connection conn = DBConn.getMySqlConnection();
+
+	ResultSet rs = null;
+	PreparedStatement pstmt = null;	
+	
+	// 2. SQL - 데이터 추가, 수정, 삭제 - 실행할 객체 생성 
+	Statement stmt = conn.createStatement();
+	
+	String sql = 
+			"SELECT DISTINCT product.name, product.productID, femaleSub.sum as female "
+  			+ "FROM (SELECT COUNT(transaction.productID) as sum, productID "
+			+ "FROM transaction, customer "
+			+ "WHERE customer.gender='Male' AND transaction.customerName=customer.name "
+			+ "GROUP BY transaction.productID) maleSub, "
+			+ "(SELECT COUNT(transaction.productID) as sum, productID "
+			+ "FROM transaction, customer "
+			+ "WHERE customer.gender='Female' AND transaction.customerName=customer.name "
+			+ "GROUP BY transaction.productID) femaleSub, product "
+			+ "WHERE ((maleSub.sum<femaleSub.sum AND maleSub.productID=femaleSub.productID) OR femaleSub.productID != all(SELECT productID "
+			+ "FROM transaction, customer "
+			+	"WHERE customer.gender='Male' AND transaction.customerName=customer.name "
+			+	"GROUP BY transaction.productID)) AND femaleSub.productID=product.productID ";
+	
+	pstmt = conn.prepareStatement(sql);
+	
+	try {
+		rs = pstmt.executeQuery();
+			
+		if (!rs.next()) {
+			out.println("해당하는 정보가 없습니다.");
+			return ;
+		} else {
+			rs = pstmt.executeQuery();
+		}
+		
+		out.print("<table border =" + "2 " + "width =" + "700 " + "align ="
+                + "center " + "bordercolor =" + "red " + "cellspacing ="
+                + "2 " + " bordercolor =" + "red >");
+		out.print("<tr>");
+        out.print("<th>" + "Product Name" + "</th>");
+        out.print("<th>" + "Product ID" + "</th>");
+        out.print("<th>" + "Sum of Price" + "</th>");
+        out.print("</tr>");
+        
+        while(rs.next()) {
+			String name = rs.getString("product.name");
+			String productID = rs.getString("product.productID");
+			String price = rs.getString("SUM(transaction.price)");
+			
+			out.print("<tr>");
+			out.println("<td>" + name + "</td>");
+	        out.println("<td>" + productID + "</td>");
+	        out.println("<td>" + price + "</td>");
+	        out.print("</tr>");
+		}
+	} catch(SQLException e){
+	    out.println(e.toString());
+	}
+%>
+<body>
+
+</body>
+</html>

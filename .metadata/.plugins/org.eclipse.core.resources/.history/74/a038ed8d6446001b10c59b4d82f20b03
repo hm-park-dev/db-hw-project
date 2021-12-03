@@ -1,0 +1,100 @@
+<%@ page language="java" import="java.sql.*" %>
+<%@ page import="dbhw.DBConn" %>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	function doChange(srcE, targetId){
+   		var val = srcE.options[srcE.selectedIndex].value;
+    	var targetE = document.getElementById(targetId);
+    	removeAll(targetE);
+
+    	if(val == 'Customer'){
+        	addOption('Name', targetE);
+        	addOption('Phone', targetE);
+        	addOption('Address', targetE);
+        	addOption('Gender', targetE);
+    	}
+    	else if(val == 'Transaction'){
+        	addOption('ProductID', targetE);
+        	addOption('Price', targetE);
+        	addOption('Date', targetE);
+        	addOption('CustomerName', targetE);
+    	}
+    	else if(val == 'Product') {
+    		addOption('Name', targetE);
+    		addOption('ProductID', targetE);
+    		addOption('SupplierName', targetE);
+    	}
+	}
+
+function addOption(value, e){
+    var o = new Option();
+    o.value = value;
+    o.text = value;
+   
+    e.options.add(o);
+}
+
+function removeAll(e){
+    for(var i = 0, limit = e.options.length; i < limit; ++i){
+        e.remove(1);
+    }
+}
+</script>
+</head>
+<body>
+	<form name="customerInsert" action="customerInput.jsp">
+		<input type="submit" value="고객 입력">
+	</form>
+	<form name="transactionInsert" action="transactionInput.jsp">
+		<input type="submit" value="거래 입력">
+	</form>
+	<form name="productInsert" action="productInput.jsp">
+		<input type="submit" value="상품 입력">
+	</form>
+	<p> ===================================== </p>
+	<form name="uploadForm" action="csvUpload.jsp" method="post" enctype="Multipart/form-data">
+		<p>csv 파일 업로드</p>
+		<input type="file" name="fileName">
+		<input type="submit" value="업로드">
+	</form>
+	<p> ===================================== </p>
+	<form name="searchForm">
+		<p>각 Table의 Attribute로 검색합니다.</p>
+		<p>검색할 Table과 Attribute를 선택해주세요.</p>
+		<select name="search" id="search" onchange="doChange(this, 'selectAttr')">
+			<option value="None">=== Table ===</option>
+			<option value="Customer">Customer</option>
+			<option value="Transaction">Transaction</option>
+			<option value="Product">Product</option>
+		</select>
+		<select name="selectAttr" id="selectAttr">
+			<option value="None">=== Attribute ===</option>
+		</select>
+		<input type="text" name="searchValue" size="20" id="searchValue">
+		<input type="submit" value="검색">
+	</form>
+	<p> ===================================== </p>
+	<form name="special1">
+		<input type="submit" value="남자보다 여자가 많이 산 상품의 이름 검색">
+	</form>
+	<p> ===================================== </p>
+	<form name="special2">
+		날짜: <input type="date" name="transactionDate" id="transactionDate">
+		<br>
+		<input type="submit" value="주어진 날 이전에 가장 많은 거래가 이루어진 상품 검색">
+	</form>
+	<p> ===================================== </p>
+	<form name="special3">
+		m: <input type="text" name="mvalue" size="3" maxlength="3">
+		<br>
+		<input type="submit" value="하나의 supplier에서 m번 이상의 제품을 산 고객의 이름 검색">
+	</form>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Customer Input</title>
+</head>
+
+<script language="javascript">
+	function Insert()
+	{
+		var InsertForm = document.customerInsertForm;
+		if(!InsertForm.customerName.value) {
+			alert("이름을 입력해주세요.");
+			InsertForm.customerName.focus();
+			return ;
+		}
+		
+		if(!InsertForm.customerPhone.value) {
+			alert("핸드폰 번호를 입력해주세요.");
+			InsertForm.customerPhone.focus();
+			return ;
+		}
+		
+		if(!InsertForm.customerAddress.value) {
+			alert("주소를 입력해주세요.");
+			InsertForm.customerAddress.focus();
+			return ;
+		}
+		
+		if(!InsertForm.customerGender.value) {
+			alert("성별을 입력해주세요.");
+			InsertForm.customerGender.focus();
+			return ;
+		}
+		
+		if(!(InsertForm.customerGender.value == "Female" || InsertForm.customerGender.value == "Male")) {
+			alert("성별을 맞는 형식으로 입력해주세요.");
+			InsertForm.customerGender.focus();
+			return ;
+		}
+	}
+</script>
+<body>
+	<form name="customerInsertForm" id="customerInsertForm" action="customerInsert.jsp">
+		<br>
+		이름
+		<br>
+		<input type="text" name="customerName" id="customerName">
+		<br>
+		핸드폰 번호 (xxx-xxx-xxxx)
+		<br>
+		<input type="text" name="customerPhone" id="customerPhone">
+		<br>
+		주소
+		<br>
+		<input type="text" name="customerAddress" id="customerAddress">
+		<br>
+		성별 (Female / Male)
+		<br>
+		<input type="text" name="customerGender" id="customerGender">
+		<br>
+	</form>
+	<input type="button" value="입력" id="customerInput" OnClick="javascript:Insert();">
+</body>
+</html>

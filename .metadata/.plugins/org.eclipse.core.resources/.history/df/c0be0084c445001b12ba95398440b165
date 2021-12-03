@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Customer Input</title>
+</head>
+<body>
+	<form name="customerInsertForm" id="customerInsertForm" action="customerInsert.jsp">
+		<br>
+		이름
+		<br>
+		<input type="text" name="customerName">
+		<br>
+		핸드폰 번호 (xxx-xxx-xxxx)
+		<br>
+		<input type="text" name="customerPhone">
+		<br>
+		주소
+		<br>
+		<input type="text" name="customerAddress">
+		<br>
+		성별 (Female / Male)
+		<br>
+		<input type="text" name="customerGender">
+	</form>
+</body>
+</html>

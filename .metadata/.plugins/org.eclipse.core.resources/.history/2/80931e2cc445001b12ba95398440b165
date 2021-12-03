@@ -1,0 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Customer Input</title>
+</head>
+<body>
+	<form name="customerInsertForm" id="customerInsertForm" action="customerInsert.jsp">
+		이름
+		<input type="text" name="customerName">
+		
+	</form>
+</body>
+</html>
